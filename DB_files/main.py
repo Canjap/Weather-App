@@ -17,17 +17,16 @@ i = 0
 #         INSERT INTO weather VALUES ({}, {}, {})
 #         """.format(temp, humidity, pressure)
 #         )
-    
+delete_all()
 while i < 5:
     sleep(1)
-    temp = str(int(sense.get_temperature_from_pressure())-10.0)
+    temp = str(int(sense.get_temperature_from_pressure())-10.0) #adjusting for temp sensors erroer (abt ten degrees)
     humidity = str(int(sense.get_humidity()))
     pressure = str(int(sense.get_pressure()))
     sql = """
-        INSERT INTO weather VALUES ({}, {}, {})
+        INSERT INTO weather VALUES ({}, {}, {}, NOW())
         """.format(temp, humidity, pressure)
         
     add_values(sql=sql)
     i += 1
 show_table()
-delete_all()
