@@ -1,12 +1,12 @@
 from sense_hat import SenseHat
-from db_funcs import connect, add_values
+from db_funcs import *
 from time import sleep
 
 sense = SenseHat()
 sense.clear()
-values = [] # add_values alr takes in arbitrary num of args, dont makr this a list later
+# add_values alr takes in arbitrary num of args, dont makr this a list later
 i = 0
-# 
+
 # while i < 10:
 #     sleep(1)
 #     temp = str(sense.get_temperature())
@@ -18,10 +18,16 @@ i = 0
 #         """.format(temp, humidity, pressure)
 #         )
     
-while i < 10:
+while i < 5:
     sleep(1)
-    temp = str(sense.get_temperature_from_pressure())
-    humidity = str(sense.get_humidity())
-    pressure = str(sense.get_pressure())
-    add_values(temp, humidity, pressure)
+    temp = str(int(sense.get_temperature_from_pressure())-10.0)
+    humidity = str(int(sense.get_humidity()))
+    pressure = str(int(sense.get_pressure()))
+    sql = """
+        INSERT INTO weather VALUES ({}, {}, {})
+        """.format(temp, humidity, pressure)
+        
+    add_values(sql=sql)
     i += 1
+show_table()
+delete_all()
